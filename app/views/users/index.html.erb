@@ -1,0 +1,19 @@
+<% if false %>
+<p style="color: green"><%= notice %></p>
+
+<h1>Users</h1>
+
+<div id="users">
+  <% @users.each do |user| %>
+    <%= render user %>
+    <p>
+      <%= link_to "Show this user", user %>
+    </p>
+  <% end %>
+</div>
+<% end %>
+<%= link_to "New user", new_user_path %>
+</br>
+<%= link_to "New POST", new_user_post_path(user_id: User.last) %>
+
+

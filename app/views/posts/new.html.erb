@@ -1,0 +1,9 @@
+<h1>Posts#new</h1>
+<p>Find me in app/views/posts/new.html.erb</p>
+
+<%= form_with model: [@user, @post] do |f| %>
+<%= f.label :name %>
+<%= f.text_field :title %>
+
+<%= f.submit %>
+<% end %>
