@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'users#index'
+  resources :users
 
   # Example 1 :- Root Routes.
   # root "users#index"
