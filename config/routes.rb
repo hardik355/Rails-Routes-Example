@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :customers
   root 'users#index'
   resources :users
 
@@ -74,6 +75,7 @@ Rails.application.routes.draw do
   #   resources :posts
   # end
 
+  # Load External Routes file routes_concern.rb
+  draw :routes_concern
 
-  
 end
