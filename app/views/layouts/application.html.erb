@@ -19,6 +19,9 @@
       <%= button_to "Sign in", new_customer_session_path %> 
     <% end %>
 
+    <%= link_to "Hindi Blog", hello_path(lang: 'hi'), data: { turbo: false } %>
+    <%= link_to "English Blog", hello_path, data: { turbo: false } %>
+
 
     <%= yield %>
   </body>

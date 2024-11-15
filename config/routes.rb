@@ -1,3 +1,4 @@
+
 Rails.application.routes.draw do
   devise_for :customers
   root 'users#index'
@@ -78,4 +79,22 @@ Rails.application.routes.draw do
   # Load External Routes file routes_concern.rb
   draw :routes_concern
 
+
+  # Rails Routes Constraints
+  # 1. Regular Expression
+  resources :products, only: [:index, :new, :edit, :update, :destroy]
+  get 'products/:id', to: 'products#show', as: :show_product, constraints: { id: /\d+/ }
+
+  # 2.HTTP Verb Constraints
+  match '/products/:id', to: 'products#update', via: [:put, :patch]
+
+  # 3. Request based Constraints
+  constraints LangVerifyConstraint.new do 
+    get 'hello', to: 'greetings#hindi'
+  end
+  get 'hello', to: 'greetings#english'
+
+
+  # 4. Advance Constraints
+  
 end
