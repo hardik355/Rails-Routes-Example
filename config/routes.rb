@@ -89,10 +89,26 @@ Rails.application.routes.draw do
   match '/products/:id', to: 'products#update', via: [:put, :patch]
 
   # 3. Request based Constraints
-  constraints LangVerifyConstraint.new do 
-    get 'hello', to: 'greetings#hindi'
-  end
-  get 'hello', to: 'greetings#english'
+  # Example 1 
+    constraints LangVerifyConstraint.new do 
+      get 'hello', to: 'greetings#hindi'
+    end
+    get 'hello', to: 'greetings#english'
+  
+  # Example 2: API VERSION
+    # Version 1 - Mobile and Desktop
+    constraints ApiVersionConstraint.new('v1') do 
+      get 'api/v1/users', to: 'api/v1/users#index_v1'
+    end 
+
+    # Version 2 - Mobile and Desktop
+    constraints(ApiVersionConstraint.new('v2')) do
+      get 'api/v2/users', to: 'api/v2/users#index'
+    end
+
+    # Fallback if no version matches (default v1)
+    get 'api/v1/users', to: 'api/v1/users#old_customer'
+    get 'api/v2/users', to: 'api/v2/users#old_customer'
 
 
   # 4. Advance Constraints
