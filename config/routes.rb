@@ -95,22 +95,29 @@ Rails.application.routes.draw do
     end
     get 'hello', to: 'greetings#english'
   
+  
   # Example 2: API VERSION
-    # Version 1 - Mobile and Desktop
+  # Version 1 - Mobile and Desktop
     constraints ApiVersionConstraint.new('v1') do 
       get 'api/v1/users', to: 'api/v1/users#index_v1'
     end 
 
-    # Version 2 - Mobile and Desktop
+  # Version 2 - Mobile and Desktop
     constraints(ApiVersionConstraint.new('v2')) do
       get 'api/v2/users', to: 'api/v2/users#index'
     end
 
-    # Fallback if no version matches (default v1)
+  # Fallback if no version matches (default v1)
     get 'api/v1/users', to: 'api/v1/users#old_customer'
     get 'api/v2/users', to: 'api/v2/users#old_customer'
 
-
   # 4. Advance Constraints
-  
+    resources :orders, only: [:index, :new, :edit, :update, :show, :destroy]
+
+    constraints SuspiciousEmailConstraint.new do
+      post 'orders', to: 'orders#create' 
+    end 
+
+    # Fallback route for suspicious emails
+    get 'suspicious_email', to: 'pages#suspicious_email'
 end
