@@ -1,6 +1,5 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: %i[ show edit update destroy ]
-  before_action :check_suspicious_email, only: :create
 
   # GET /orders or /orders.json
   def index
@@ -58,14 +57,19 @@ class OrdersController < ApplicationController
     end
   end
 
-  private
-    def check_suspicious_email
-      if request.env['suspicious_email']
-        Rails.logger.debug
-        redirect_to suspicious_email_path
-      end
-    end
+  def suspicious_email
+    render plain: 'Suspicious email detected. Order not created.'
+  end
 
+  def rate_limit_exceeded
+    render plain: 'Order rate limit exceeded'
+  end
+
+  def order_qty__limit_exceeded
+    render plain: 'Order Qty rate limit exceeded'
+  end 
+
+  private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @order = Order.find(params[:id])

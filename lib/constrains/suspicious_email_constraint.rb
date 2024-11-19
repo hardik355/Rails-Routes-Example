@@ -1,13 +1,14 @@
 class SuspiciousEmailConstraint
   def initialize
-    @suspicious_domains = ['fakeemail.com', 'spammydomain.net', 'yopmail.com']
+    @suspicious_domains = ['fakeemail.com', 'spammydomain.net', 'yopmail.com', 'test@yopmail.com']
   end 
 
   def matches?(request)
-    email = request.params[:order][:email]
-    domain = email.split('@').last if email
+    email = request.params.dig(:order, :email)
+    return false if email.blank?
+    domain = email.split('@').last
     is_suspicious = @suspicious_domains.include?(domain)
-    request.env['suspicious_email'] = is_suspicious
+    Rails.logger.info "Email: #{email}, Domain: #{domain}, Suspicious: #{is_suspicious}"
     !is_suspicious
   end 
 

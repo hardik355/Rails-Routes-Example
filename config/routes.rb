@@ -99,6 +99,7 @@ Rails.application.routes.draw do
   # Example 2: API VERSION
   # Version 1 - Mobile and Desktop
     constraints ApiVersionConstraint.new('v1') do 
+      # If this fails then it will Rails moves to the next matching route in the routing table. 
       get 'api/v1/users', to: 'api/v1/users#index_v1'
     end 
 
@@ -112,12 +113,30 @@ Rails.application.routes.draw do
     get 'api/v2/users', to: 'api/v2/users#old_customer'
 
   # 4. Advance Constraints
-    resources :orders, only: [:index, :new, :edit, :update, :show, :destroy]
+    # Example 1 Blocking Fake Orders Based on Order Frequency (Rate Limiting)
+      resources :orders, only: [:index, :new, :edit, :update, :show, :destroy]
 
-    constraints SuspiciousEmailConstraint.new do
-      post 'orders', to: 'orders#create' 
+      # constraints SuspiciousEmailConstraint.new do
+      #   post 'orders', to: 'orders#create' 
+      # end 
+
+    # Fallback route for suspicious emails
+    # post 'orders', to: 'orders#suspicious_email'
+
+    # Example 2 Blocking Fake Orders Based on Order Frequency (Rate Limiting)
+    # constraints RateLimitConstraint.new do
+    #   post 'orders', to: 'orders#create'
+    # end 
+
+    # Fallback route for suspicious emails
+    # post 'orders', to: 'orders#rate_limit_exceeded'
+
+    # Example 3 Blocking Fake Orders Based on Excessive Quantity
+     constraints QuantityLimitConstraint.new do
+      post 'orders', to: 'orders#create'
     end 
 
     # Fallback route for suspicious emails
-    get 'suspicious_email', to: 'pages#suspicious_email'
+    post 'orders', to: 'orders#order_qty__limit_exceeded'
+
 end

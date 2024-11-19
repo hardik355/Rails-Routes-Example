@@ -23,10 +23,10 @@
 
   <div>
     <%= form.label :ip_address, style: "display: block" %>
-    <%= form.text_field :ip_address %>
+    <%= form.text_field :ip_address, value: request.remote_ip %>
   </div>
 
   <div>
-    <%= form.submit %>
+    <%= form.submit data: { turbo: false } %>
   </div>
 <% end %>
