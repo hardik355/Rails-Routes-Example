@@ -95,7 +95,6 @@ Rails.application.routes.draw do
     end
     get 'hello', to: 'greetings#english'
   
-  
   # Example 2: API VERSION
   # Version 1 - Mobile and Desktop
     constraints ApiVersionConstraint.new('v1') do 
@@ -132,11 +131,15 @@ Rails.application.routes.draw do
     # post 'orders', to: 'orders#rate_limit_exceeded'
 
     # Example 3 Blocking Fake Orders Based on Excessive Quantity
-     constraints QuantityLimitConstraint.new do
-      post 'orders', to: 'orders#create'
-    end 
+      constraints QuantityLimitConstraint.new do
+        post 'orders', to: 'orders#create'
+      end 
 
     # Fallback route for suspicious emails
     post 'orders', to: 'orders#order_qty__limit_exceeded'
+
+  # 4. Rails Uniq routes
+  # Rake Exmple
+  get '/rack_app', to: MyRackApp.new
 
 end
